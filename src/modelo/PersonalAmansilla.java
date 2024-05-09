@@ -9,5 +9,8 @@ package modelo;
  * @author lolal
  */
 public class PersonalAmansilla {
-    
+    private int numero_colegiado;
+    private String nombre,apellidos;
+    private int telefono;
+    private String usuario,contrasenya,tipo;
 }

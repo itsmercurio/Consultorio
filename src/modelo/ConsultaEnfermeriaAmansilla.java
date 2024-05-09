@@ -10,10 +10,12 @@ import java.util.Date;
  *
  * @author lolal
  */
-public class ConsultaAmansilla {
+public class ConsultaEnfermeriaAmansilla {
     
-    private String dniPaciente;
-    private Date fechaConsulta;
-    private String diagnostico,tratamiento,observaciones;
-    private int codigofacultativo;
+    String dniPaciente;
+    Date fechaConsulta;
+    double maxima,minima;   
+    int glucosa;
+    double peso;
+    int codigofacultativo;
 }

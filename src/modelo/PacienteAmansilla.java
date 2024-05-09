@@ -4,10 +4,18 @@
  */
 package modelo;
 
+import java.util.Date;
+
 /**
  *
  * @author lolal
  */
 public class PacienteAmansilla {
-    
+    private String dni, nombre,apellidos;
+    private Date fechaNacimiento;
+    private int telefono;
+    private String email;
+    private int cp;
+    private String sexo,tabaquismo,consumoalcohol,antecedentesSalud,datosSaludGeneral;
+    private Date fechaRegistro;
 }

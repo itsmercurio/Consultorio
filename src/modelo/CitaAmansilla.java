@@ -4,10 +4,16 @@
  */
 package modelo;
 
+import java.util.Date;
+
 /**
  *
  * @author lolal
  */
 public class CitaAmansilla {
+    
+    String dniPaciente,nombre;
+    Date dia;
+    double hora;
     
 }
