@@ -47,7 +47,7 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(1275, 750));
         setResizable(false);
 
-        jPanel2.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel2.setBackground(new java.awt.Color(0, 204, 204));
         jPanel2.setPreferredSize(new java.awt.Dimension(1275, 750));
 
         jLabel2.setText("jLabel2");
@@ -87,7 +87,7 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        botonConsultas.setBackground(new java.awt.Color(51, 255, 153));
+        botonConsultas.setBackground(new java.awt.Color(0, 153, 153));
         botonConsultas.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         botonConsultas.setText("PACIENTES");
         botonConsultas.addActionListener(new java.awt.event.ActionListener() {
@@ -96,7 +96,7 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
             }
         });
 
-        botonConsultas1.setBackground(new java.awt.Color(51, 255, 153));
+        botonConsultas1.setBackground(new java.awt.Color(0, 153, 153));
         botonConsultas1.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         botonConsultas1.setText("ENFERMERÍA");
         botonConsultas1.addActionListener(new java.awt.event.ActionListener() {
@@ -105,7 +105,7 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
             }
         });
 
-        botonConsultas2.setBackground(new java.awt.Color(51, 255, 153));
+        botonConsultas2.setBackground(new java.awt.Color(0, 153, 153));
         botonConsultas2.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         botonConsultas2.setText("PERSONAL MÉDICO");
         botonConsultas2.addActionListener(new java.awt.event.ActionListener() {
@@ -114,7 +114,7 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
             }
         });
 
-        botonConsultas3.setBackground(new java.awt.Color(51, 255, 153));
+        botonConsultas3.setBackground(new java.awt.Color(0, 153, 153));
         botonConsultas3.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         botonConsultas3.setText("CONSULTAS");
         botonConsultas3.addActionListener(new java.awt.event.ActionListener() {
