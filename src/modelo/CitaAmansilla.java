@@ -16,4 +16,6 @@ public class CitaAmansilla {
     Date dia;
     double hora;
     
+    
+    
 }

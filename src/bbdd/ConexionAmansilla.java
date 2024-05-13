@@ -34,6 +34,8 @@ public class ConexionAmansilla {
     
     public static String[] recuperarDatosUserLogado(String user){
     
+        return null;
+    
     }
     
     public static void recuperarCitasMedicas(DefaultTableModel modelo){
