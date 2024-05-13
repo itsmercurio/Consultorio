@@ -28,6 +28,8 @@ public class ConexionAmansilla {
     
     public static boolean acceder(String user, String pass){
     
+        return false;
+    
     }
     
     public static String[] recuperarDatosUserLogado(String user){
