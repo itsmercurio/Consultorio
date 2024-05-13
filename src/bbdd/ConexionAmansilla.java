@@ -17,6 +17,9 @@ public class ConexionAmansilla {
     public static Connection conectar() {
     
     
+        return null;
+    
+    
     }
     
     public static void cerrarConexion(){
