@@ -46,11 +46,11 @@ public class ConexionAmansilla {
     
     }
     
-    public static boolean registrarCitaMedica(Cita c){
+    public static boolean registrarCitaMedica(CitaAmansilla c){
     
     }
     
-    public static boolean regitrarCitaEnfermeria(Cita c){
+    public static boolean regitrarCitaEnfermeria(CitaAmansilla c){
     
     }
     
