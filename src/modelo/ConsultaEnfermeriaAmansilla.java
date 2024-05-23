@@ -12,10 +12,13 @@ import java.util.Date;
  */
 public class ConsultaEnfermeriaAmansilla {
     
-    String dniPaciente;
-    Date fechaConsulta;
-    double maxima,minima;   
-    int glucosa;
-    double peso;
-    int codigofacultativo;
+    String dniPacienteAmansilla;
+    Date fechaConsultaAmansilla;
+    double maximaAmansilla,minimaAmansilla;   
+    int glucosaAmansilla;
+    double pesoAmansilla;
+    int codigofacultativoAmansilla;
+
+
+    
 }

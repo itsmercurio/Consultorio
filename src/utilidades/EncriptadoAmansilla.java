@@ -20,7 +20,7 @@ import org.apache.commons.codec.binary.Base64;
  */
 public class EncriptadoAmansilla {
     
-    private static final String MILLAVE = "reynaldoreynaldo";
+    private static final String MILLAVE = "vJMnURwFuojTiaJT";
     
     public static String encriptar(String textoEncriptar) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
        Key millaveEnBytes = new SecretKeySpec(MILLAVE.getBytes(),"AES");

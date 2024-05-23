@@ -12,10 +12,9 @@ import java.util.Date;
  */
 public class CitaAmansilla {
     
-    String dniPaciente,nombre;
-    Date dia;
-    double hora;
-    
-    
+    String dniPacienteAmansilla,nombreAmansilla;
+    Date diaAmansilla;
+    double horaAmansilla;
+
     
 }

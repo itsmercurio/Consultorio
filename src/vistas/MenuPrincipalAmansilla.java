@@ -4,6 +4,13 @@
  */
 package vistas;
 
+import bbdd.ConexionAmansilla;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import javax.swing.table.DefaultTableModel;
+import static vistas.LoginAmansilla.recuperarDatosAmansilla;
+
 /**
  *
  * @author lolal
@@ -15,6 +22,40 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
      */
     public MenuPrincipalAmansilla() {
         initComponents();
+        
+        DefaultTableModel modeloAmansilla = (DefaultTableModel) tablaAgenda.getModel();
+        
+        
+        Date fechaAmansilla = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd'-'MMMM'-'YYYY",new Locale("es"));
+        String FechaFormateadaAmansilla = formato.format(fechaAmansilla);
+        
+        labelFecha.setText(FechaFormateadaAmansilla);
+        
+        if ("MEDICO".equals(recuperarDatosAmansilla[2])){
+        labelNombre.setText("Facultativo: " + recuperarDatosAmansilla[0]);
+        labelNumero.setText("Nº de colegiado" + recuperarDatosAmansilla[1]);
+        botonConsultas.setEnabled(rootPaneCheckingEnabled);
+        botonPacientes.setEnabled(rootPaneCheckingEnabled);
+        labelAgenda.setText("AGENDA MÉDICA");
+        ConexionAmansilla.conectarAmansilla();
+        ConexionAmansilla.recuperarCitasMedicasAmansilla(modeloAmansilla);
+        ConexionAmansilla.cerrarConexionAmansilla();
+        } else if ("ENFERMERIA".equals(recuperarDatosAmansilla[2])){
+        labelNombre.setText("Facultativo: " + recuperarDatosAmansilla[0]);
+        labelNumero.setText("Nº de colegiado" + recuperarDatosAmansilla[1]);
+        botonEnfermeria.setEnabled(rootPaneCheckingEnabled);
+        labelAgenda.setText("AGENDA ENFERMERÍA");
+        ConexionAmansilla.conectarAmansilla();
+        ConexionAmansilla.recuperarCitasMedicasAmansilla(modeloAmansilla);
+        ConexionAmansilla.cerrarConexionAmansilla();
+        } else {
+            labelNombre.setText("Administrador: " + recuperarDatosAmansilla[0]);
+            botonPersonal.setEnabled(rootPaneCheckingEnabled);
+            labelNumero.setText(" ");
+        }
+        
+      
     }
 
     /**
@@ -28,18 +69,18 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        labelFecha = new javax.swing.JLabel();
+        labelNombre = new javax.swing.JLabel();
+        labelNumero = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        botonPacientes = new javax.swing.JButton();
+        botonEnfermeria = new javax.swing.JButton();
+        botonPersonal = new javax.swing.JButton();
         botonConsultas = new javax.swing.JButton();
-        botonConsultas1 = new javax.swing.JButton();
-        botonConsultas2 = new javax.swing.JButton();
-        botonConsultas3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaAgenda = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        labelAgenda = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 255));
@@ -50,11 +91,11 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(0, 204, 204));
         jPanel2.setPreferredSize(new java.awt.Dimension(1275, 750));
 
-        jLabel2.setText("jLabel2");
+        labelFecha.setText("jLabel2");
 
-        jLabel3.setText("jLabel3");
+        labelNombre.setText("jLabel3");
 
-        jLabel4.setText("jLabel4");
+        labelNumero.setText("jLabel4");
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/logo_good.png"))); // NOI18N
         jLabel5.setText("jLabel5");
@@ -66,9 +107,9 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(labelFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(labelNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(labelNumero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -77,58 +118,59 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jLabel2)
+                .addComponent(labelFecha)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
+                    .addComponent(labelNombre)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addComponent(labelNumero)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        botonPacientes.setBackground(new java.awt.Color(0, 153, 153));
+        botonPacientes.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        botonPacientes.setText("PACIENTES");
+        botonPacientes.setEnabled(false);
+        botonPacientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonPacientesActionPerformed(evt);
+            }
+        });
+
+        botonEnfermeria.setBackground(new java.awt.Color(0, 153, 153));
+        botonEnfermeria.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        botonEnfermeria.setText("ENFERMERÍA");
+        botonEnfermeria.setEnabled(false);
+        botonEnfermeria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEnfermeriaActionPerformed(evt);
+            }
+        });
+
+        botonPersonal.setBackground(new java.awt.Color(0, 153, 153));
+        botonPersonal.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        botonPersonal.setText("PERSONAL MÉDICO");
+        botonPersonal.setEnabled(false);
+        botonPersonal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonPersonalActionPerformed(evt);
+            }
+        });
+
         botonConsultas.setBackground(new java.awt.Color(0, 153, 153));
         botonConsultas.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
-        botonConsultas.setText("PACIENTES");
+        botonConsultas.setText("CONSULTAS");
+        botonConsultas.setEnabled(false);
         botonConsultas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonConsultasActionPerformed(evt);
             }
         });
 
-        botonConsultas1.setBackground(new java.awt.Color(0, 153, 153));
-        botonConsultas1.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
-        botonConsultas1.setText("ENFERMERÍA");
-        botonConsultas1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonConsultas1ActionPerformed(evt);
-            }
-        });
-
-        botonConsultas2.setBackground(new java.awt.Color(0, 153, 153));
-        botonConsultas2.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
-        botonConsultas2.setText("PERSONAL MÉDICO");
-        botonConsultas2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonConsultas2ActionPerformed(evt);
-            }
-        });
-
-        botonConsultas3.setBackground(new java.awt.Color(0, 153, 153));
-        botonConsultas3.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
-        botonConsultas3.setText("CONSULTAS");
-        botonConsultas3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonConsultas3ActionPerformed(evt);
-            }
-        });
-
         tablaAgenda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "NOMBRE", "DIA", "HORA"
@@ -139,10 +181,10 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/principal.png"))); // NOI18N
         jLabel1.setText("jLabel1");
 
-        jLabel6.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel6.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("AGENDA DE CITAS MÉDICAS");
+        labelAgenda.setBackground(new java.awt.Color(0, 0, 0));
+        labelAgenda.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        labelAgenda.setForeground(new java.awt.Color(255, 255, 255));
+        labelAgenda.setText("AGENDA DE CITAS MÉDICAS");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -155,18 +197,18 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))
+                            .addComponent(labelAgenda))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(85, 85, 85))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(botonConsultas3, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
                         .addComponent(botonConsultas, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(50, 50, 50)
-                        .addComponent(botonConsultas1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(botonPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(50, 50, 50)
-                        .addComponent(botonConsultas2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(botonEnfermeria, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addComponent(botonPersonal, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(177, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -175,15 +217,15 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(132, 132, 132)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonConsultas, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonConsultas3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonConsultas1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonConsultas2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(botonEnfermeria, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonPersonal, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(50, 50, 50)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
+                        .addComponent(labelAgenda)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(22, Short.MAX_VALUE))
@@ -208,21 +250,24 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void botonPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPacientesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonPacientesActionPerformed
+
+    private void botonEnfermeriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEnfermeriaActionPerformed
+        // TODO add your handling code here:
+        EnfermeriaAmansilla e = new EnfermeriaAmansilla();
+        e.setVisible(rootPaneCheckingEnabled);
+    }//GEN-LAST:event_botonEnfermeriaActionPerformed
+
+    private void botonPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPersonalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonPersonalActionPerformed
+
     private void botonConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConsultasActionPerformed
-        // TODO add your handling code here:
+        MedicoAmansilla ma = new MedicoAmansilla();
+        ma.setVisible(rootPaneCheckingEnabled);
     }//GEN-LAST:event_botonConsultasActionPerformed
-
-    private void botonConsultas1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConsultas1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botonConsultas1ActionPerformed
-
-    private void botonConsultas2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConsultas2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botonConsultas2ActionPerformed
-
-    private void botonConsultas3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConsultas3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botonConsultas3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -261,18 +306,18 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonConsultas;
-    private javax.swing.JButton botonConsultas1;
-    private javax.swing.JButton botonConsultas2;
-    private javax.swing.JButton botonConsultas3;
+    private javax.swing.JButton botonEnfermeria;
+    private javax.swing.JButton botonPacientes;
+    private javax.swing.JButton botonPersonal;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelAgenda;
+    private javax.swing.JLabel labelFecha;
+    private javax.swing.JLabel labelNombre;
+    private javax.swing.JLabel labelNumero;
     private javax.swing.JTable tablaAgenda;
     // End of variables declaration//GEN-END:variables
 }

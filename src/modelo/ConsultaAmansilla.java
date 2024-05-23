@@ -12,8 +12,10 @@ import java.util.Date;
  */
 public class ConsultaAmansilla {
     
-    private String dniPaciente;
-    private Date fechaConsulta;
-    private String diagnostico,tratamiento,observaciones;
-    private int codigofacultativo;
+    private String dniPacienteAmansilla;
+    private Date fechaConsultaAmansilla;
+    private String diagnosticoAmansilla,tratamientoAmansilla,observacionesAmansilla;
+    private int codigofacultativoAmansilla;
+
+    
 }
