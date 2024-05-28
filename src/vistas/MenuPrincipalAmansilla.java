@@ -5,9 +5,16 @@
 package vistas;
 
 import bbdd.ConexionAmansilla;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.swing.table.DefaultTableModel;
 import static vistas.LoginAmansilla.recuperarDatosAmansilla;
 
@@ -34,7 +41,7 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
         
         if ("MEDICO".equals(recuperarDatosAmansilla[2])){
         labelNombre.setText("Facultativo: " + recuperarDatosAmansilla[0]);
-        labelNumero.setText("Nº de colegiado" + recuperarDatosAmansilla[1]);
+        labelNumero.setText("Nº de colegiado: " + recuperarDatosAmansilla[1]);
         botonConsultas.setEnabled(rootPaneCheckingEnabled);
         botonPacientes.setEnabled(rootPaneCheckingEnabled);
         labelAgenda.setText("AGENDA MÉDICA");
@@ -43,7 +50,7 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
         ConexionAmansilla.cerrarConexionAmansilla();
         } else if ("ENFERMERIA".equals(recuperarDatosAmansilla[2])){
         labelNombre.setText("Facultativo: " + recuperarDatosAmansilla[0]);
-        labelNumero.setText("Nº de colegiado" + recuperarDatosAmansilla[1]);
+        labelNumero.setText("Nº de colegiado: " + recuperarDatosAmansilla[1]);
         botonEnfermeria.setEnabled(rootPaneCheckingEnabled);
         labelAgenda.setText("AGENDA ENFERMERÍA");
         ConexionAmansilla.conectarAmansilla();
@@ -251,7 +258,21 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPacientesActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            PacientesAmansilla p = new PacientesAmansilla(this, rootPaneCheckingEnabled);
+            p.setVisible(rootPaneCheckingEnabled);
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(MenuPrincipalAmansilla.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(MenuPrincipalAmansilla.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(MenuPrincipalAmansilla.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(MenuPrincipalAmansilla.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(MenuPrincipalAmansilla.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_botonPacientesActionPerformed
 
     private void botonEnfermeriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEnfermeriaActionPerformed
@@ -261,7 +282,9 @@ public class MenuPrincipalAmansilla extends javax.swing.JFrame {
     }//GEN-LAST:event_botonEnfermeriaActionPerformed
 
     private void botonPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPersonalActionPerformed
-        // TODO add your handling code here:
+        PersonalMedicoAmansilla p = new PersonalMedicoAmansilla(this, rootPaneCheckingEnabled);
+        p.setVisible(rootPaneCheckingEnabled);
+        
     }//GEN-LAST:event_botonPersonalActionPerformed
 
     private void botonConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConsultasActionPerformed

@@ -26,6 +26,11 @@ import utilidades.EncriptadoAmansilla;
  */
 public class MedicoAmansilla extends javax.swing.JFrame {
 
+    public static String DniPacienteAmansilla;
+    public static String nombrePacienteAmansilla;
+    public static String apellidosPacienteAmansilla;
+    public static String emailPacienteAmansilla;
+
     /**
      * Creates new form MedicoAmansilla
      */
@@ -66,7 +71,7 @@ public class MedicoAmansilla extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaConsultas = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
+        botonActualizar = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(0, 204, 204));
         jPanel1.setMaximumSize(new java.awt.Dimension(1175, 650));
@@ -240,11 +245,11 @@ public class MedicoAmansilla extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaConsultas);
 
-        jButton4.setText("Actualizar tabla");
-        jButton4.setEnabled(false);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        botonActualizar.setText("Actualizar tabla");
+        botonActualizar.setEnabled(false);
+        botonActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                botonActualizarActionPerformed(evt);
             }
         });
 
@@ -265,7 +270,7 @@ public class MedicoAmansilla extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1171, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(489, 489, 489)
-                        .addComponent(jButton4))
+                        .addComponent(botonActualizar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -294,7 +299,7 @@ public class MedicoAmansilla extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                .addComponent(jButton4)
+                .addComponent(botonActualizar)
                 .addGap(31, 31, 31))
         );
 
@@ -339,16 +344,27 @@ public class MedicoAmansilla extends javax.swing.JFrame {
 
     private void BotonNuevaCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonNuevaCitaActionPerformed
         // TODO add your handling code here:
+        NuevaCitaAmansilla n = new NuevaCitaAmansilla(this, rootPaneCheckingEnabled);
+        n.setVisible(rootPaneCheckingEnabled);
     }//GEN-LAST:event_BotonNuevaCitaActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void botonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarActionPerformed
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) tablaConsultas.getModel();
+            modelo.setRowCount(0);
+            ConexionAmansilla.conectarAmansilla();
+            ConexionAmansilla.cargaTablaConsultasMedicasAmansilla(modelo, EncriptadoAmansilla.encriptar(campoDni.getText()));
+            ConexionAmansilla.cerrarConexionAmansilla();
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
+            Logger.getLogger(MedicoAmansilla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_botonActualizarActionPerformed
 
     private void botonBuscarPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarPacienteActionPerformed
-        
-        
+
         try {
+
+            DniPacienteAmansilla = campoDni.getText();
             DefaultTableModel modeloAmansilla = (DefaultTableModel) tablaConsultas.getModel();
             String dni = campoDni.getText();
             recuperarDni = dni;
@@ -363,13 +379,16 @@ public class MedicoAmansilla extends javax.swing.JFrame {
                 campoEmail.setText(paciente.getEmailAmansilla());
                 botonNuevoInforme.setEnabled(rootPaneCheckingEnabled);
                 BotonNuevaCita.setEnabled(rootPaneCheckingEnabled);
-                
-                
+                botonActualizar.setEnabled(rootPaneCheckingEnabled);
+                nombrePacienteAmansilla = campoNombre.getText();
+                apellidosPacienteAmansilla = campoApellidos.getText();
+                campoDni.setEnabled(false);
             } else {
+
                 JOptionPane.showMessageDialog(null, "No se encontró ningún paciente con el DNI proporcionado.");
                 NuevoPacienteAmansilla np = new NuevoPacienteAmansilla(this, rootPaneCheckingEnabled);
                 np.setVisible(rootPaneCheckingEnabled);
-                
+
             }
         } catch (InvalidKeyException ex) {
             Logger.getLogger(MedicoAmansilla.class.getName()).log(Level.SEVERE, null, ex);
@@ -443,6 +462,7 @@ public class MedicoAmansilla extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonNuevaCita;
+    private javax.swing.JButton botonActualizar;
     private javax.swing.JButton botonBuscarPaciente;
     private javax.swing.JButton botonNuevoInforme;
     private javax.swing.JTextField campoApellidos;
@@ -450,7 +470,6 @@ public class MedicoAmansilla extends javax.swing.JFrame {
     private javax.swing.JTextField campoEmail;
     private javax.swing.JTextField campoNombre;
     private javax.swing.JTextField campoTelefono;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -467,10 +486,9 @@ public class MedicoAmansilla extends javax.swing.JFrame {
 
     public static String[] recuperarDatos;
     public static String recuperarDni;
-    
+
     public void datosFila() {
-    
-    
+
     }
 
 }

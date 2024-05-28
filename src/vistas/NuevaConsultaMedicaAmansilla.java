@@ -4,6 +4,19 @@
  */
 package vistas;
 
+import bbdd.ConexionAmansilla;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.swing.JOptionPane;
+import modelo.ConsultaAmansilla;
+import utilidades.EncriptadoAmansilla;
+import utilidades.UtilidadesAmansilla;
+import static vistas.MedicoAmansilla.DniPacienteAmansilla;
+
 /**
  *
  * @author lolal
@@ -16,6 +29,7 @@ public class NuevaConsultaMedicaAmansilla extends javax.swing.JDialog {
     public NuevaConsultaMedicaAmansilla(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        campoDni.setText(DniPacienteAmansilla);
     }
 
     /**
@@ -32,20 +46,20 @@ public class NuevaConsultaMedicaAmansilla extends javax.swing.JDialog {
         jLabel19 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        campoDni = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        campoTratamiento = new javax.swing.JTextArea();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea4 = new javax.swing.JTextArea();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        jTextArea5 = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        campoDiagnostico = new javax.swing.JTextArea();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        campoObservaciones = new javax.swing.JTextArea();
 
         setMaximumSize(new java.awt.Dimension(1000, 650));
         setMinimumSize(new java.awt.Dimension(1000, 650));
@@ -87,10 +101,10 @@ public class NuevaConsultaMedicaAmansilla extends javax.swing.JDialog {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Diagnóstico");
 
-        jTextField1.setEditable(false);
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        campoDni.setEditable(false);
+        campoDni.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                campoDniActionPerformed(evt);
             }
         });
 
@@ -106,9 +120,9 @@ public class NuevaConsultaMedicaAmansilla extends javax.swing.JDialog {
             }
         });
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        campoTratamiento.setColumns(20);
+        campoTratamiento.setRows(5);
+        jScrollPane2.setViewportView(campoTratamiento);
 
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
         jLabel20.setText("Tratamiento");
@@ -128,26 +142,33 @@ public class NuevaConsultaMedicaAmansilla extends javax.swing.JDialog {
         jButton6.setBackground(new java.awt.Color(0, 153, 153));
         jButton6.setForeground(new java.awt.Color(255, 255, 255));
         jButton6.setText("Guardar");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setBackground(new java.awt.Color(0, 153, 153));
         jButton7.setForeground(new java.awt.Color(255, 255, 255));
         jButton7.setText("Cancelar");
 
-        jTextArea4.setColumns(20);
-        jTextArea4.setRows(5);
-        jScrollPane4.setViewportView(jTextArea4);
+        campoDiagnostico.setColumns(20);
+        campoDiagnostico.setRows(5);
+        jScrollPane3.setViewportView(campoDiagnostico);
 
-        jTextArea5.setColumns(20);
-        jTextArea5.setRows(5);
-        jScrollPane5.setViewportView(jTextArea5);
+        campoObservaciones.setColumns(20);
+        campoObservaciones.setRows(5);
+        jScrollPane6.setViewportView(campoObservaciones);
 
         javax.swing.GroupLayout jPanel34Layout = new javax.swing.GroupLayout(jPanel34);
         jPanel34.setLayout(jPanel34Layout);
         jPanel34Layout.setHorizontalGroup(
             jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel34Layout.createSequentialGroup()
+                .addComponent(jPanel33, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel34Layout.createSequentialGroup()
                 .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel33, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel34Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,25 +176,22 @@ public class NuevaConsultaMedicaAmansilla extends javax.swing.JDialog {
                             .addGroup(jPanel34Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(campoDni, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel20)
                             .addComponent(jLabel21)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 954, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 954, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 954, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 954, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel34Layout.createSequentialGroup()
-                .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 954, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel34Layout.createSequentialGroup()
                         .addGap(244, 244, 244)
                         .addComponent(jButton5)
                         .addGap(266, 266, 266)
                         .addComponent(jButton4))
                     .addGroup(jPanel34Layout.createSequentialGroup()
-                        .addGap(298, 298, 298)
-                        .addComponent(jButton7)
-                        .addGap(273, 273, 273)
-                        .addComponent(jButton6)))
+                        .addGap(266, 266, 266)
+                        .addComponent(jButton6)
+                        .addGap(369, 369, 369)
+                        .addComponent(jButton7)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel34Layout.setVerticalGroup(
@@ -182,28 +200,28 @@ public class NuevaConsultaMedicaAmansilla extends javax.swing.JDialog {
                 .addComponent(jPanel33, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel20)
                 .addGap(12, 12, 12)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel21)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel34Layout.createSequentialGroup()
-                        .addGap(102, 102, 102)
+                        .addGap(90, 90, 90)
                         .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton4)
                             .addComponent(jButton5)))
                     .addGroup(jPanel34Layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
+                        .addGap(17, 17, 17)
                         .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton7)
                             .addComponent(jButton6)))))
@@ -227,6 +245,11 @@ public class NuevaConsultaMedicaAmansilla extends javax.swing.JDialog {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        registrarconsultaAmansilla();
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -271,6 +294,10 @@ public class NuevaConsultaMedicaAmansilla extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea campoDiagnostico;
+    private javax.swing.JTextField campoDni;
+    private javax.swing.JTextArea campoObservaciones;
+    private javax.swing.JTextArea campoTratamiento;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
@@ -284,13 +311,49 @@ public class NuevaConsultaMedicaAmansilla extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel33;
     private javax.swing.JPanel jPanel34;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextArea jTextArea4;
-    private javax.swing.JTextArea jTextArea5;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane6;
     // End of variables declaration//GEN-END:variables
 
+    String dniAmansilla, diagAmansilla, trataAmansilla, obserAmansilla;
+    Date fechaAmansilla;
+    int numerofacAmansilla;
 
+    public void registrarconsultaAmansilla() {
+        if (UtilidadesAmansilla.CompruebaTextAreaVacioAmansilla(campoDiagnostico)) {
+            UtilidadesAmansilla.LanzaAlertaTextAreaVacioAmansilla(campoDiagnostico);
+        } else if (UtilidadesAmansilla.CompruebaTextAreaVacioAmansilla(campoTratamiento)) {
+            UtilidadesAmansilla.LanzaAlertaTextAreaVacioAmansilla(campoTratamiento);
+        } else if (UtilidadesAmansilla.CompruebaTextAreaVacioAmansilla(campoTratamiento)) {
+            UtilidadesAmansilla.LanzaAlertaTextAreaVacioAmansilla(campoTratamiento);
+        } else {
+            
+            try {
+                dniAmansilla = EncriptadoAmansilla.encriptar(campoDni.getText());
+                
+                diagAmansilla = campoDiagnostico.getText();
+                trataAmansilla = campoTratamiento.getText();
+                obserAmansilla = campoObservaciones.getText();
+                fechaAmansilla = new Date();
+                numerofacAmansilla = Integer.parseInt((String) LoginAmansilla.recuperarDatosAmansilla[1]);
+                
+                ConsultaAmansilla c = new ConsultaAmansilla(dniAmansilla, fechaAmansilla, diagAmansilla, trataAmansilla, obserAmansilla, numerofacAmansilla);
+                
+                ConexionAmansilla.conectarAmansilla();
+                
+                if (ConexionAmansilla.registrarConsultaMedicaAmansilla(c)) {
+                    ConexionAmansilla.cerrarConexionAmansilla();
+                    JOptionPane.showMessageDialog(this, """
+                                                                        Error en la acci\u00f3n de registro. Int\u00e9ntelo m\u00e1s tarde o p\u00f3ngase
+                                                                        en contacto con el administrador del sistema?""");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Registro correcto");
+                    this.dispose();
+                }
+            } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
+                java.util.logging.Logger.getLogger(NuevaConsultaMedicaAmansilla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
+        }
+
+    }
 }

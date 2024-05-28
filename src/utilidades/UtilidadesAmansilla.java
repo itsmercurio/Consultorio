@@ -8,6 +8,7 @@ import java.awt.Component;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
@@ -223,5 +224,15 @@ public class UtilidadesAmansilla {
                 c.setEnabled(true);
             }
         }
+    }
+    
+    public static boolean CompruebaTextAreaVacioAmansilla(JTextArea campoAmansilla) {
+        // Comprueba si el área de texto está vacía
+        return campoAmansilla.getText().trim().isEmpty();
+    }
+
+    public static void LanzaAlertaTextAreaVacioAmansilla(JTextArea campoAmansilla) {
+        // Muestra una alerta si el área de texto está vacía
+        JOptionPane.showMessageDialog(null, "El campo " + campoAmansilla.getName() + " es obligatorio, compruebelo y vuelvalo a intentar.");
     }
 }

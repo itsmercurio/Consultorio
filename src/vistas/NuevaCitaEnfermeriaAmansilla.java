@@ -5,38 +5,41 @@
 package vistas;
 
 import bbdd.ConexionAmansilla;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.JOptionPane;
 import modelo.CitaAmansilla;
+import utilidades.EncriptadoAmansilla;
 import utilidades.UtilidadEmailAmansilla;
 import utilidades.UtilidadesAmansilla;
-import static vistas.MedicoAmansilla.DniPacienteAmansilla;
-import static vistas.MedicoAmansilla.apellidosPacienteAmansilla;
-import static vistas.MedicoAmansilla.nombrePacienteAmansilla;
+import static vistas.EnfermeriaAmansilla.apellidosAmansilla;
+import static vistas.EnfermeriaAmansilla.nombreAmansilla;
+import static vistas.EnfermeriaAmansilla.dniEncriptadoAmansilla;
+import static vistas.EnfermeriaAmansilla.emailAmansilla;
 
 /**
  *
  * @author lolal
  */
-public class NuevaCitaAmansilla extends javax.swing.JDialog {
+public class NuevaCitaEnfermeriaAmansilla extends javax.swing.JDialog {
 
     /**
      * Creates new form NuevaCitaAmansilla
      */
-    public NuevaCitaAmansilla(java.awt.Frame parent, boolean modal) {
+    public NuevaCitaEnfermeriaAmansilla(java.awt.Frame parent, boolean modal) throws InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException {
         super(parent, modal);
         initComponents();
-        campoDni.setText(DniPacienteAmansilla);
-        campoNombre.setText(nombrePacienteAmansilla + " " + apellidosPacienteAmansilla);
 
+        campoDni.setText(dniEncriptadoAmansilla);
+
+        campoNombre.setText(EnfermeriaAmansilla.nombreAmansilla + " " + EnfermeriaAmansilla.apellidosAmansilla);
     }
 
     /**
@@ -60,7 +63,7 @@ public class NuevaCitaAmansilla extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         comboHora = new javax.swing.JComboBox<>();
         botonRegistrar = new javax.swing.JButton();
-        dateFecha = new com.toedter.calendar.JDateChooser();
+        comboFecha = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -68,7 +71,7 @@ public class NuevaCitaAmansilla extends javax.swing.JDialog {
 
         jLabel21.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(0, 204, 204));
-        jLabel21.setText("NUEVO INFORME MÉDICO");
+        jLabel21.setText("NUEVO INFORME ENFERMERÍA");
 
         jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/logo_good.png"))); // NOI18N
         jLabel24.setText("jLabel22");
@@ -80,7 +83,7 @@ public class NuevaCitaAmansilla extends javax.swing.JDialog {
             .addGroup(jPanel35Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(jLabel21)
-                .addGap(0, 197, Short.MAX_VALUE)
+                .addGap(0, 136, Short.MAX_VALUE)
                 .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
@@ -100,16 +103,11 @@ public class NuevaCitaAmansilla extends javax.swing.JDialog {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nombre y apellidos");
 
-        campoDni.setEditable(false);
-        campoDni.setName("DNI"); // NOI18N
         campoDni.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoDniActionPerformed(evt);
             }
         });
-
-        campoNombre.setEditable(false);
-        campoNombre.setName("Nombre"); // NOI18N
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Fecha");
@@ -117,8 +115,7 @@ public class NuevaCitaAmansilla extends javax.swing.JDialog {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Hora");
 
-        comboHora.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "8.30", "9.00", "9.30", "10.00", "10.30", "11.00", "11.30", "12.00", "12.30", "13.00", "13.30", "14.00" }));
-        comboHora.setName("Hora"); // NOI18N
+        comboHora.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "08.00", "08.30", "09.00", "09.30", "10.00", "10.30", "11.00", "11.30", "12.00", "12.30", "13.00", "13.30", "14.00", "14.30", "15.00" }));
 
         botonRegistrar.setBackground(new java.awt.Color(0, 153, 153));
         botonRegistrar.setForeground(new java.awt.Color(255, 255, 255));
@@ -129,7 +126,7 @@ public class NuevaCitaAmansilla extends javax.swing.JDialog {
             }
         });
 
-        dateFecha.setName("Fecha"); // NOI18N
+        comboFecha.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Una Semana", "Dos Semanas", "Un mes" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -149,8 +146,8 @@ public class NuevaCitaAmansilla extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(campoDni)
                             .addComponent(campoNombre)
-                            .addComponent(comboHora, 0, 126, Short.MAX_VALUE)
-                            .addComponent(dateFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(comboHora, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboFecha, 0, 126, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(193, 193, 193)
                         .addComponent(botonRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -169,9 +166,9 @@ public class NuevaCitaAmansilla extends javax.swing.JDialog {
                     .addComponent(jLabel2)
                     .addComponent(campoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(dateFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -204,7 +201,7 @@ public class NuevaCitaAmansilla extends javax.swing.JDialog {
         try {
             registrarCitaAmansilla();
         } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-            Logger.getLogger(NuevaCitaAmansilla.class.getName()).log(Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NuevaCitaEnfermeriaAmansilla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botonRegistrarActionPerformed
 
@@ -225,27 +222,32 @@ public class NuevaCitaAmansilla extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NuevaCitaAmansilla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NuevaCitaEnfermeriaAmansilla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NuevaCitaAmansilla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NuevaCitaEnfermeriaAmansilla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NuevaCitaAmansilla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NuevaCitaEnfermeriaAmansilla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NuevaCitaAmansilla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NuevaCitaEnfermeriaAmansilla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                NuevaCitaAmansilla dialog = new NuevaCitaAmansilla(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+                try {
+                    NuevaCitaEnfermeriaAmansilla dialog = new NuevaCitaEnfermeriaAmansilla(new javax.swing.JFrame(), true);
+                    dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                        @Override
+                        public void windowClosing(java.awt.event.WindowEvent e) {
+                            System.exit(0);
+                        }
+                    });
+                    dialog.setVisible(true);
+                } catch (InvalidKeyException | NoSuchAlgorithmException | IllegalBlockSizeException | NoSuchPaddingException | BadPaddingException ex) {
+                    java.util.logging.Logger.getLogger(NuevaCitaEnfermeriaAmansilla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -254,8 +256,8 @@ public class NuevaCitaAmansilla extends javax.swing.JDialog {
     private javax.swing.JButton botonRegistrar;
     private javax.swing.JTextField campoDni;
     private javax.swing.JTextField campoNombre;
+    private javax.swing.JComboBox<String> comboFecha;
     private javax.swing.JComboBox<String> comboHora;
-    private com.toedter.calendar.JDateChooser dateFecha;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
@@ -266,44 +268,45 @@ public class NuevaCitaAmansilla extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel35;
     // End of variables declaration//GEN-END:variables
 
-    String dniPaciente, nomAmansilla;
-    Date diaAmansilla;
+    String dniPacienteAmansilla, nomAmansilla,SeleccionFechaAmansilla;
+    Date diaAmansilla = new Date();
     Double hrAmansilla;
-
-    public void registrarCitaAmansilla() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-        if (dateFecha.getDate() == null) {
-            JOptionPane.showMessageDialog(this, "Debe elegir una fecha para la cita.");
+    
+    
+    public void registrarCitaAmansilla () throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException{
+        if (UtilidadesAmansilla.comboNoSeleccionadoAmansilla(comboFecha)) {
+            UtilidadesAmansilla.alertaComboNoSeleccionadoAmansilla(this, comboFecha);
         } else if (UtilidadesAmansilla.comboNoSeleccionadoAmansilla(comboHora)) {
             UtilidadesAmansilla.alertaComboNoSeleccionadoAmansilla(this, comboHora);
         } else {
-
-            dniPaciente = campoDni.getText();
+            
+            dniPacienteAmansilla = campoDni.getText();
             nomAmansilla = campoNombre.getText();
-            diaAmansilla = dateFecha.getDate();
+            SeleccionFechaAmansilla = comboFecha.getSelectedItem().toString();
+            if(SeleccionFechaAmansilla.equals("Una semana")){
+                //la multiplicacion es el numero de milisegundos
+                diaAmansilla = new Date(diaAmansilla.getTime()+(7 * 24 * 60 * 60 *1000));
+            } else if(SeleccionFechaAmansilla.equals("Dos semanas")){
+                diaAmansilla = new Date(diaAmansilla.getTime()+(14 * 24 * 60 * 60 *1000));
+            }else if(SeleccionFechaAmansilla.equals("Un mes")){
+                diaAmansilla = new Date(diaAmansilla.getTime()+(30 * 24 * 60 * 60 *1000));
+            }
+            
+            
             hrAmansilla = Double.valueOf(comboHora.getSelectedItem().toString());
-
-            CitaAmansilla c = new CitaAmansilla(dniPaciente, nomAmansilla, diaAmansilla, hrAmansilla);
-
+            
+            CitaAmansilla c = new CitaAmansilla(dniPacienteAmansilla, nombreAmansilla, diaAmansilla, hrAmansilla);
+            
             ConexionAmansilla.conectarAmansilla();
-
             if (ConexionAmansilla.registrarCitaMedicaAmansilla(c)) {
                 ConexionAmansilla.cerrarConexionAmansilla();
                 JOptionPane.showMessageDialog(this, "Error en la acción de registro. Inténtelo más tarde o póngase\n"
-                        + "en contacto con el administrador del sistema");
+                        + "en contacto con el administrador del sistema?");
             } else {
                 JOptionPane.showMessageDialog(this, "Registro correcto");
-                UtilidadEmailAmansilla.enviaMailAdjuntoAmansilla(c, MedicoAmansilla.emailPacienteAmansilla);
+                UtilidadEmailAmansilla.enviaMailAdjuntoAmansilla(c, EnfermeriaAmansilla.emailAmansilla);
                 this.dispose();
             }
-
         }
     }
-
-    public Date sumarRestarDiasFechasAmansilla(Date fecha, int dias) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(fecha);
-        calendar.add(Calendar.DAY_OF_YEAR, dias);
-        return calendar.getTime();
-    }
-
 }

@@ -217,8 +217,8 @@ public class LoginAmansilla extends javax.swing.JFrame {
                 
             } else {
                 JOptionPane.showMessageDialog(this, "Logado incorreto");
-                campoUsuario.setText(" ");
-                campoContrasena.setText(" ");
+                campoUsuario.setText("");
+                campoContrasena.setText("");
                 
             }
         } catch (InvalidKeyException ex) {

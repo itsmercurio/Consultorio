@@ -43,6 +43,13 @@ public class PacienteAmansilla {
         this.fechaRegistroAmansilla = fechaRegistroAmansilla;
     }
 
+    public PacienteAmansilla(String nombreAmansilla, String apellidosAmansilla, int telefonoAmansilla, int cpAmansilla) {
+        this.nombreAmansilla = nombreAmansilla;
+        this.apellidosAmansilla = apellidosAmansilla;
+        this.telefonoAmansilla = telefonoAmansilla;
+        this.cpAmansilla = cpAmansilla;
+    }
+
     
     public String getDniAmansilla() {
         return dniAmansilla;

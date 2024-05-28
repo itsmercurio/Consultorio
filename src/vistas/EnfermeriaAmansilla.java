@@ -5,6 +5,8 @@
 package vistas;
 
 import bbdd.ConexionAmansilla;
+import java.awt.HeadlessException;
+import java.awt.Insets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
@@ -13,9 +15,12 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import modelo.PacienteAmansilla;
 import utilidades.EncriptadoAmansilla;
+import utilidades.UtilidadesAmansilla;
 import static vistas.MedicoAmansilla.recuperarDni;
 
 /**
@@ -23,6 +28,14 @@ import static vistas.MedicoAmansilla.recuperarDni;
  * @author lolal
  */
 public class EnfermeriaAmansilla extends javax.swing.JFrame {
+
+    PacienteAmansilla p;
+    DefaultTableModel modeloAmansilla;
+
+    public static String dniEncriptadoAmansilla;
+    public static String nombreAmansilla;
+    public static String apellidosAmansilla;
+    public static String emailAmansilla;
 
     /**
      * Creates new form EnfermeriaAmansilla
@@ -60,7 +73,7 @@ public class EnfermeriaAmansilla extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaConsultas = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
+        botonActualizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -114,6 +127,7 @@ public class EnfermeriaAmansilla extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Nombre");
 
+        campoNombre.setEditable(false);
         campoNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoNombreActionPerformed(evt);
@@ -123,6 +137,7 @@ public class EnfermeriaAmansilla extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Apellidos");
 
+        campoApellidos.setEditable(false);
         campoApellidos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoApellidosActionPerformed(evt);
@@ -132,12 +147,14 @@ public class EnfermeriaAmansilla extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Teléfono");
 
+        campoTelefono.setEditable(false);
         campoTelefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoTelefonoActionPerformed(evt);
             }
         });
 
+        campoEmail.setEditable(false);
         campoEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoEmailActionPerformed(evt);
@@ -149,6 +166,11 @@ public class EnfermeriaAmansilla extends javax.swing.JFrame {
 
         botonNuevoInforme.setText("Nuevo Informe");
         botonNuevoInforme.setEnabled(false);
+        botonNuevoInforme.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonNuevoInformeActionPerformed(evt);
+            }
+        });
 
         botonNuevaCita.setText("Nueva Cita");
         botonNuevaCita.setEnabled(false);
@@ -219,14 +241,27 @@ public class EnfermeriaAmansilla extends javax.swing.JFrame {
             new String [] {
                 "FECHA", "MÁXIMA", "MÍNIMA", "GLUCOSA", "PESO"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaConsultas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaConsultasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaConsultas);
 
-        jButton4.setText("Actualizar tabla");
-        jButton4.setEnabled(false);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        botonActualizar.setText("Actualizar tabla");
+        botonActualizar.setEnabled(false);
+        botonActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                botonActualizarActionPerformed(evt);
             }
         });
 
@@ -247,7 +282,7 @@ public class EnfermeriaAmansilla extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1171, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(489, 489, 489)
-                        .addComponent(jButton4))
+                        .addComponent(botonActualizar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -276,7 +311,7 @@ public class EnfermeriaAmansilla extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                .addComponent(jButton4)
+                .addComponent(botonActualizar)
                 .addGap(31, 31, 31))
         );
 
@@ -320,12 +355,22 @@ public class EnfermeriaAmansilla extends javax.swing.JFrame {
     }//GEN-LAST:event_campoEmailActionPerformed
 
     private void botonNuevaCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevaCitaActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            emailAmansilla = campoEmail.getText();
+            dniEncriptadoAmansilla = campoDni.getText();
+            nombreAmansilla = campoNombre.getText();
+            apellidosAmansilla = campoApellidos.getText();
+            NuevaCitaEnfermeriaAmansilla n = new NuevaCitaEnfermeriaAmansilla(this, rootPaneCheckingEnabled);
+            n.setVisible(rootPaneCheckingEnabled);
+        } catch (InvalidKeyException | NoSuchAlgorithmException | IllegalBlockSizeException | NoSuchPaddingException | BadPaddingException ex) {
+            Logger.getLogger(EnfermeriaAmansilla.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_botonNuevaCitaActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void botonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_botonActualizarActionPerformed
 
     private void botonBuscarPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarPacienteActionPerformed
         // TODO add your handling code here:
@@ -344,26 +389,43 @@ public class EnfermeriaAmansilla extends javax.swing.JFrame {
                 campoEmail.setText(paciente.getEmailAmansilla());
                 botonNuevoInforme.setEnabled(rootPaneCheckingEnabled);
                 botonNuevaCita.setEnabled(rootPaneCheckingEnabled);
-                
-                
+                botonBuscarPaciente.setEnabled(false);
+
             } else {
                 JOptionPane.showMessageDialog(null, "No se encontró ningún paciente con el DNI proporcionado.");
                 NuevoPacienteAmansilla np = new NuevoPacienteAmansilla(this, rootPaneCheckingEnabled);
                 np.setVisible(rootPaneCheckingEnabled);
-                
+
             }
-        } catch (InvalidKeyException ex) {
-            Logger.getLogger(MedicoAmansilla.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(MedicoAmansilla.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            Logger.getLogger(MedicoAmansilla.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
-            Logger.getLogger(MedicoAmansilla.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
+        } catch (InvalidKeyException | NoSuchAlgorithmException | IllegalBlockSizeException | NoSuchPaddingException | BadPaddingException ex) {
             Logger.getLogger(MedicoAmansilla.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botonBuscarPacienteActionPerformed
+
+    private void botonNuevoInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoInformeActionPerformed
+        // TODO add your handling code here:
+        dniEncriptadoAmansilla = campoDni.getText();
+        NuevaConsultaEnfermeriaAmansilla nc = new NuevaConsultaEnfermeriaAmansilla(this, rootPaneCheckingEnabled);
+        nc.setVisible(rootPaneCheckingEnabled);
+    }//GEN-LAST:event_botonNuevoInformeActionPerformed
+
+    private void tablaConsultasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaConsultasMouseClicked
+        String contenido = "FECHA DE CONSULTA: " + String.valueOf(tablaConsultas.getValueAt(tablaConsultas.getSelectedRow(), 0));
+        contenido += "\n\nMÁXIMA:\n " + String.valueOf(tablaConsultas.getValueAt(tablaConsultas.getSelectedRow(), 1));
+        contenido += "\n\nMÍNIMA:\n " + String.valueOf(tablaConsultas.getValueAt(tablaConsultas.getSelectedRow(), 2));
+        contenido += "\n\nGLUCOSA:\n " + String.valueOf(tablaConsultas.getValueAt(tablaConsultas.getSelectedRow(), 3));
+        contenido += "\n\nPESO:\n " + String.valueOf(tablaConsultas.getValueAt(tablaConsultas.getSelectedRow(), 4));
+
+        JTextArea t = new JTextArea(20, 60);
+        t.setText(contenido);
+        t.setEditable(false);
+        t.setLineWrap(true);
+        t.setFocusable(false);
+        t.setAutoscrolls(true);
+        t.setMargin(new Insets(10, 10, 10, 10));
+
+        JOptionPane.showMessageDialog(this, new JScrollPane(t), "INFORME", 1);
+    }//GEN-LAST:event_tablaConsultasMouseClicked
 
     /**
      * @param args the command line arguments
@@ -401,6 +463,7 @@ public class EnfermeriaAmansilla extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonActualizar;
     private javax.swing.JButton botonBuscarPaciente;
     private javax.swing.JButton botonNuevaCita;
     private javax.swing.JButton botonNuevoInforme;
@@ -409,7 +472,6 @@ public class EnfermeriaAmansilla extends javax.swing.JFrame {
     private javax.swing.JTextField campoEmail;
     private javax.swing.JTextField campoNombre;
     private javax.swing.JTextField campoTelefono;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -423,4 +485,50 @@ public class EnfermeriaAmansilla extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaConsultas;
     // End of variables declaration//GEN-END:variables
+
+    public void buscarPaciente() {
+
+        if (!UtilidadesAmansilla.compruebaVacioAmansilla(campoDni)) {
+            UtilidadesAmansilla.LanzaAlertaEnteroAmansilla(this, campoDni);
+        } else if (!UtilidadesAmansilla.formatoDniCorrectoAmansilla(campoDni)) {
+            UtilidadesAmansilla.lanzaAlertaFormatoDniAmansilla(this, campoDni);
+        } else if (!UtilidadesAmansilla.letraDniCorrectaAmansilla(campoDni)) {
+            UtilidadesAmansilla.lanzaAlertaLetraDniAmansilla(this, campoDni);
+        } else {
+            String dniDesencriptado = campoDni.getText();
+
+            ConexionAmansilla.conectarAmansilla();
+
+            try {
+                dniEncriptadoAmansilla = EncriptadoAmansilla.encriptar(dniDesencriptado);
+
+                if (ConexionAmansilla.compruebaDniAmansilla(dniEncriptadoAmansilla)) {
+                    p = ConexionAmansilla.recueperarDatosPacienteAmansilla(dniEncriptadoAmansilla);
+
+                    campoNombre.setText(EncriptadoAmansilla.desencriptar(p.getNombreAmansilla()));
+                    campoApellidos.setText(EncriptadoAmansilla.desencriptar(p.getApellidosAmansilla()));
+                    campoTelefono.setText(String.valueOf(p.getTelefonoAmansilla()));
+                    campoEmail.setText(p.getEmailAmansilla());
+                    botonNuevoInforme.setEnabled(true);
+                    botonNuevaCita.setEnabled(true);
+                    botonActualizar.setEnabled(true);
+
+                    ConexionAmansilla.cargaTablaConsultasEnfermeriaAmansilla(modeloAmansilla, dniEncriptadoAmansilla);
+
+                    nombreAmansilla = campoNombre.getText();
+                    apellidosAmansilla = campoApellidos.getText();
+                    emailAmansilla = campoEmail.getText();
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "El paciente no se encuentra.");
+                    NuevoPacienteAmansilla NPY = new NuevoPacienteAmansilla(this, true);
+                    NPY.setVisible(true);
+                }
+            } catch (HeadlessException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException ex) {
+                Logger.getLogger(MedicoAmansilla.class.getName()).log(Level.SEVERE, null, ex);
+                ConexionAmansilla.cerrarConexionAmansilla();
+            }
+        }
+    }
+
 }

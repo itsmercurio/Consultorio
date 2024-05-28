@@ -90,7 +90,7 @@ public class NuevoPacienteAmansilla extends javax.swing.JDialog {
 
         jLabel20.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(0, 204, 204));
-        jLabel20.setText("NUEVO INFORME MÉDICO");
+        jLabel20.setText(" NUEVO PACIENTE");
 
         jLabel23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/logo_good.png"))); // NOI18N
         jLabel23.setText("jLabel22");
@@ -625,9 +625,10 @@ public class NuevoPacienteAmansilla extends javax.swing.JDialog {
             ConexionAmansilla.conectarAmansilla();
             if (ConexionAmansilla.registrarPacienteAmansilla(pa)) {
                 ConexionAmansilla.cerrarConexionAmansilla();
-                JOptionPane.showMessageDialog(this, "El alumno ha sido registrado");
+                JOptionPane.showMessageDialog(this, "Paciente registrado correctamente");
             } else {
-                JOptionPane.showMessageDialog(this, "No se ha podido registrar el alumno");
+                JOptionPane.showMessageDialog(this, "Error en el registro del paciente."
+                        + " Inténtelo más tarde o póngase en contacto con el administrador del sistema");
             }
         }
     }
